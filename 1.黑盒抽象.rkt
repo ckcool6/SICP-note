@@ -1,7 +1,7 @@
 #lang racket
 (require r5rs)
 
-;;前缀表达式
+;;S-exp
 (+ 1 3 4)
 
 (+ (* 3
@@ -10,9 +10,9 @@
    (+ (- 10 7)
       6))
 
-;;定义函数
+;; define a function
 
-;;
+;; name
 (define pi 3.14159)
 pi
 (define e 2.718)
@@ -22,7 +22,7 @@ e
 phi
 D-cup
 
-;;
+;; 
 (define square
   (lambda (x)
     (* x x)))
@@ -33,7 +33,7 @@ D-cup
   (lambda (x y)
     (+ (square 3) (square 6)))) 
 
-;;条件判断
+;; condition
 
 (define abs
   (lambda (x)
@@ -41,7 +41,7 @@ D-cup
           ((> x 0) x)
           ((= x 0) 0))))
 
-;;heron法求平方根
+;; heron's method
 
 (define sqrt-iter
   (lambda (guess x)
@@ -63,7 +63,7 @@ D-cup
 ;;(my-sqrt 4)
 ;;(my-sqrt 3)
 
-;;嵌套定义
+;; block structure
 (define my-sqrt
   (lambda (x)
     (define improve
