@@ -57,14 +57,14 @@ D-cup
 (define good-enough?
   (lambda (guess x)
     (< (abs (- (square guess) x)) 0.001)))
-;;(define my-sqrt
-;;  (lambda (x)
-;;    (sqrt-iter 1.0 x)))
-;;(my-sqrt 4)
-;;(my-sqrt 3)
+(define my-sqrt
+  (lambda (x)
+    (sqrt-iter 1.0 x)))
+(my-sqrt 4)
+(my-sqrt 3)
 
 ;; block structure
-(define my-sqrt
+(define my-sqrt-2
   (lambda (x)
     (define improve
       (lambda (guess x)
@@ -82,7 +82,7 @@ D-cup
         (sqrt-iter (improve guess x) x))))
    (sqrt-iter 1.0 x)))
 
-(my-sqrt 4)
-(my-sqrt 3)   
+(my-sqrt-2 4)
+(my-sqrt-2 3)   
 
 
