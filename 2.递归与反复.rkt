@@ -85,4 +85,17 @@
 
 (gcd 206 40)
 
+;;
+(define output-iter
+  (lambda (i n)
+    (if (<= i n)
+        (begin
+          (display "hello,world!")
+          (newline)
+          (output-iter (+ i 1) n)))))
+(define output-n
+  (lambda (n)
+    (output-iter 1 n)))
+(output-n 6)
+
 
