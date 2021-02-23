@@ -1,3 +1,5 @@
+;;; list and tree, emumerate-->filter-->map-->accumulate
+
 #lang racket
 (require r6rs)
 
