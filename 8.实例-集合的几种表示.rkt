@@ -59,6 +59,7 @@
   (cadr tree))
 (define (right-branch tree)
   (caddr tree))
+
 (define (make-tree entry left right)
   (list entry left right))
 
@@ -89,4 +90,5 @@
   (make-tree 5
              (make-tree 1 '() '())
              (make-tree 9 '() '())))
+
 (element-of-set-3? 1 my-tree)
