@@ -1,4 +1,4 @@
-;;; list and tree, emumerate-->filter-->map-->accumulate
+;;; list and tree(use closure), emumerate-->filter-->map-->accumulate
 
 #lang racket
 (require r6rs)
