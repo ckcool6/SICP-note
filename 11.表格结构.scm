@@ -1,3 +1,4 @@
+
 ;; one-d table
 
 (define (lookup key table)
@@ -105,7 +106,3 @@ sheet
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
-
-put
-get 
-
