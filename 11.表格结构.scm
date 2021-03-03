@@ -106,3 +106,8 @@ sheet
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
+
+;;test
+(put 'math '+ 4)
+(put 'math '- 7)
+(get 'math '+)
