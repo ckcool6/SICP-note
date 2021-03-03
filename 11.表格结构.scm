@@ -1,4 +1,4 @@
-
+;; use chez scheme
 ;; one-d table
 
 (define (lookup key table)
