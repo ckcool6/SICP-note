@@ -70,3 +70,17 @@ balance
 ((acc 'withdraw) 60)
 ((acc2 'withdraw) 40)
 
+;;
+(define (make-decrementer balance)
+    (lambda (amount)
+      (- balance amount)))
+
+(define D (make-decrementer 25))
+;;test
+(D 20)
+(D 10)
+
+;;
+(random 5)
+(random 5)
+(random 5)
