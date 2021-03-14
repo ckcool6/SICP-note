@@ -26,6 +26,23 @@
       (cons
        (car list1)
        (append (cdr list1) list2))))
+       
+ (define (last-pair lst)
+    (cond ((null? lst)
+            (error "list empty -- LAST-PAIR"))
+          ((null? (cdr lst))
+            lst)
+          (else
+            (last-pair (cdr lst)))))
+
+(define (iter remained-items result)
+    (if (null? remained-items)
+        result
+        (iter (cdr remained-items)
+              (cons (car remained-items) result))))
+
+(define (reverse lst)
+    (iter lst '()))
 
 ;; map list
 
