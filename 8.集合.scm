@@ -93,7 +93,7 @@
 
 (element-of-set-3? 1 my-tree)
 
-;;list--->tree 
+;;list--->blance tree 
 (define (list->tree elements)
   (car (partial-tree elements
                      (length elements))))
