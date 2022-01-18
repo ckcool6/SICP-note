@@ -17,10 +17,10 @@
 pi
 (define e 2.718)
 (define phi 1.618)
-(define D-cup 17.5)
+
 e
 phi
-D-cup
+
 
 ;; 
 (define square
