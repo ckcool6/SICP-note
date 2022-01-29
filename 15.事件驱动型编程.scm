@@ -1,3 +1,6 @@
+#lang racket
+(require r5rs)
+
 ;;logic gate
 (define (inverter input output)
   (define (invert-input)
@@ -101,125 +104,119 @@
         (propagate))))
 
 ;;structure of agenda:
+
+; segment
+
 (define (make-time-segment time queue)
   (cons time queue))
 
-(define (segment-time s)
-  (car s))
+(define (segment-time s) (car s))
 
-(define (segment-queue s)
-  (cdr s))
+(define (segment-queue s) (cdr s))
 
-(define (make-agenda)
-  (list 0))
+; agenda
 
-(define (current-time agenda)
-  (car agenda))
+(define (make-agenda) (list 0))
+
+(define (current-time agenda) (car agenda))
 
 (define (set-current-time! agenda time)
-  (set-car! agenda segments))
+  (set-car! agenda time))
 
-(define (segments agenda)
-  (cdr agenda))
+(define (segments agenda) (cdr agenda))
 
 (define (set-segments! agenda segments)
-  (set-cdr! agenda segments))
+    (set-cdr! agenda segments))
 
-(define (first-segment agenda)
-  (car (segments agenda)))
+(define (first-segment agenda) (car (segments agenda)))
 
-(define (rest-sements agenda)
-  (cdr (segments agenda)))
+(define (rest-segments agenda) (cdr (segments agenda)))
 
 (define (empty-agenda? agenda)
   (null? (segments agenda)))
 
 (define (add-to-agenda! time action agenda)
-  (define (belongs-before? segments)
-    (or (null? segments)
-        (< time (segment-time (car segments)))))
-  (define (make-new-time-segment time action)
-    (let ((q (make-queue)))
-      (insert-queue! q action)
-      (make-time-segment time q)))
-  (define (add-to-segments! segments)
-    (if (= (segment-time (car segments)) time)
-        (insert-queue! (segment-queue (car segments))
-                       action)
-        (let ((rest (cdr segments)))
-          (if (belongs-before? rest)
-              (set-cdr!
-               segments
-               (cons (make-new-time-segment time action)
-                     (cdr segments)))
-              (add-to-segments! rest)))))
-  (let ((segments (segments agenda)))
-    (if (belongs-before? segments)
-        (set-segments!
-         agenda
-         (cons (make-new-time-segment time action)
-               segments))
-        (add-to-segments! segments))))
+    (define (belongs-before? segments)
+        (or (null? segments)
+            (< time (segment-time (car segments)))))
+    (define (make-new-time-segment time action)
+        (let ((q (make-queue)))
+              (insert-queue! q action)
+              (make-time-segment time q)))
+    (define (add-to-segments! segments)
+        (if (= (segment-time (car segments)) time)
+            (insert-queue! (segment-queue (car segments))
+                           action)
+            (let ((rest (cdr segments)))
+                (if (belongs-before? rest)
+                    (set-cdr!
+                        segments
+                        (cons (make-new-time-segment time action)
+                              (cdr segments)))
+                        (add-to-segments! rest)))))
+        (let ((segments (segments agenda)))
+            (if (belongs-before? segments)
+                (set-segments!
+                    agenda
+                    (cons (make-new-time-segment time action)
+                          segments))
+                    (add-to-segments! segments))))
 
 (define (remove-first-agenda-item! agenda)
-  (let ((q (segment-queue (first-segment agenda))))
-    (delete-queue! q)
-    (if (empty-queue? q)
-        (set-segments! agenda (rest-segments agenda)))))
+    (let ((q (segment-queue (first-segment agenda))))
+        (delete-queue! q)
+        (if (empty-queue? q)
+            (set-segments! agenda (rest-segments agenda)))))
 
 (define (first-agenda-item agenda)
-  (if (empty-agenda? agenda)
-      (error "Agenda is empty")
-      (let ((first-seg (first-segment agenda)))
-        (set-current-time! agenda (segment-time first-seg))
-        (front-queue (segment-queue first-seg)))))
+    (if (empty-agenda? agenda)
+        (error "Agenda is empty -- FIRST-AGENDA-ITEM")
+        (let ((first-seg (first-segment agenda)))
+            (set-current-time! agenda (segment-time first-seg))
+            (front-queue (segment-queue first-seg)))))
+;;
+(define (front-ptr queue)
+    (car queue))
 
-(define front-pointer
-  (lambda (queue)
-    (car queue)))
+(define (rear-ptr queue)
+    (cdr queue))
 
-(define rear-pointer
-  (lambda (queue)
-    (cdr queue)))
+(define (set-front-ptr! queue item)
+    (set-car! queue item))
 
-(define set-front-ptr!
-  (lambda (queue item)
-    (set-car! queue item)))
+(define (set-rear-ptr! queue item)
+    (set-cdr! queue item))
 
-(define set-rear-ptr!
-  (lambda (queue item)
-    (set-cdr! queue item)))
+; queue
 
-(define empty-queue?
-  (lambda (queue)
-    (null? (front-pointer queue))))
+(define (empty-queue? queue)
+    (null? (front-ptr queue)))
 
-(define make-queue
-  (lambda () (cons '() '())))
+(define (make-queue)
+    (cons '() '()))
 
 (define (front-queue queue)
-  (if (empty-queue? queue)
-      (error "FRONT called with an empty queue" queue)
-      (car (front-pointer queue))))
+    (if (empty-queue? queue)
+        (error "FRONT called with an empty queue" queue)
+        (car (front-ptr queue))))
 
 (define (insert-queue! queue item)
-  (let ((new-pair (cons item '())))
-    (cond ((empty-queue? queue)
-	   (set-front-ptr! queue new-pair)
-	   (set-rear-ptr! queue new-pair)
-	   queue)
-	  (else
-	   (set-cdr! (rear-pointer queue) new-pair)
-	   (set-rear-ptr! queue new-pair)
-	   queue))))
+    (let ((new-pair (cons item '())))
+        (cond ((empty-queue? queue)
+                (set-front-ptr! queue new-pair)
+                (set-rear-ptr! queue new-pair)
+                queue)
+              (else
+                (set-cdr! (rear-ptr queue) new-pair)
+                (set-rear-ptr! queue new-pair)
+                queue))))
 
 (define (delete-queue! queue)
-  (cond ((empty-queue? queue)
-	 (error "DELETE called with an empty queue" queue))
-	(else
-	 (set-front-ptr! queue (cdr
-				(front-pointer queue)))
-	 queue)))
+    (cond ((empty-queue? queue)
+            (error "DELETE! called with an empty queue" queue))
+          (else
+            (set-front-ptr! queue (cdr (front-ptr queue)))
+            queue)))
 
 ;;test
 (define (half-adder a b s c)
@@ -268,5 +265,7 @@ the-agenda
 
 (set-signal! input-1 1)
 ;; value: done
+(propagate)
+
 (set-signal! input-2 1)
 (propagate)
