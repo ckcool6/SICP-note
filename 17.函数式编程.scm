@@ -73,3 +73,35 @@
 (stream-ref primes 8)
 
 ;;application of stream
+(define (sqrt-improve guess x)
+  (average guess (/ x guess)))
+
+(define average
+  (lambda (x y)
+    (/ (+ x y) 2)))
+
+(define (sqrt-stream x)
+  (define guesses
+    (cons-stream 1.0
+                 (stream-map (lambda (guess)
+                               (sqrt-improve guess x))
+                             guesses)))
+  guesses)
+
+(define (stream-for-each proc s)
+  (if (stream-null? s)
+      'done
+      (begin
+        (proc (stream-car s))
+        (stream-for-each proc (stream-cdr s)))))
+
+(define (display-stream s)
+  (stream-for-each display-line s))
+
+(define (display-line x)
+  (newline)
+  (display x))
+
+(display-stream (sqrt-stream 2))
+
+
